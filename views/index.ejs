@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= userName %>'s Blog</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <h1><%= userName %>'s Blog</h1>
+
+        <form action="/new" method="POST">
+            <input type="text" name="title" placeholder="Post Title" required>
+            <textarea name="content" placeholder="Write your post here..." required></textarea>
+            <button type="submit">Make a Post</button>
+        </form>
+    </div>
+
+    <div class="posts">
+        <% if (posts.length > 0) { %>
+            <% posts.forEach(post => { %>
+                <div class="post">
+                    <tr>
+                        <h2><a href="/post/<%= post.id %>"><%= post.title %></a></h2>
+                        <form action="/delete/<%= post.id %>" method="POST">
+                            <button class="delete-btn" type="submit">Delete</button>
+                        </form>
+                    </tr>
+                   
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No posts found!</p>
+        <% } %>
+    </div>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> <%= userName %>'s Blog</p>
+    </footer>
+</body>
+</html>
