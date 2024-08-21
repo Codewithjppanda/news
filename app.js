@@ -36,17 +36,17 @@ let posts = [];
 // Routes
 app.get("/", (req, res) => {
     if (!req.session.userName) {
-        res.redirect("/user-info");
+        res.redirect("/userinfo");
     } else {
         res.render("index", { userName: req.session.userName, posts: posts });
     }
 });
 
 app.get("/user-info", (req, res) => {
-    res.render("user-info");
+    res.render("userinfo");
 });
 
-app.post("/user-info", async (req, res) => {
+app.post("/userinfo", async (req, res) => {
     const userName = req.body.name;
     const userEmail = req.body.email;
 
