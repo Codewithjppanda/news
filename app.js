@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
     }
 });
 
-app.get("/user-info", (req, res) => {
+app.get("/userinfo", (req, res) => {
     res.render("userinfo");
 });
 
