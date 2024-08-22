@@ -6,8 +6,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import Post from './models/post.js'; // Correct Import for Post model
-import User from './models/user.js'; // Import the User model
+import Post from '../models/post.js'; // Update import paths
+import User from '../models/user.js'; // Update import paths
 
 // Load environment variables
 dotenv.config();
@@ -17,12 +17,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const port = 3000;
 
 // Middleware Setup
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../views')); // Update views directory
 
 // Session Setup
 app.use(session({
@@ -37,7 +37,7 @@ app.get('/', async (req, res) => {
         res.redirect('/userinfo');
     } else {
         try {
-            const posts = await Post.find({ user: req.session.userId }); // Retrieve posts by the current user
+            const posts = await Post.find({ user: req.session.userId });
             res.render('index', { userName: req.session.userName, posts: posts });
         } catch (error) {
             console.error('Error retrieving posts:', error);
@@ -59,14 +59,14 @@ app.post('/userinfo', async (req, res) => {
 
         if (user) {
             req.session.userName = userName;
-            req.session.userId = user._id; // Store the user's ID in the session
+            req.session.userId = user._id;
             res.redirect('/');
         } else {
             user = new User({ name: userName, email: userEmail });
             await user.save();
 
             req.session.userName = userName;
-            req.session.userId = user._id; // Store the new user's ID in the session
+            req.session.userId = user._id;
             res.redirect('/');
         }
     } catch (error) {
@@ -81,7 +81,7 @@ app.post('/new', async (req, res) => {
         const newPost = new Post({
             title,
             content,
-            user: req.session.userId // Associate the post with the current user
+            user: req.session.userId
         });
         await newPost.save();
         res.redirect('/');
@@ -125,12 +125,10 @@ app.post('/delete/:id', async (req, res) => {
 const mongoURI = process.env.MONGO_URI;
 
 mongoose.connect(mongoURI, {
-    serverSelectionTimeoutMS: 30000 // Increase timeout to 30 seconds
+    serverSelectionTimeoutMS: 30000
 })
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('MongoDB connection error:', err));
 
-// Start the server
-app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
-});
+// Export the app as a function to be used in a serverless environment
+export default app;

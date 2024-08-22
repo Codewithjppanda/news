@@ -21,13 +21,10 @@
         <% if (posts.length > 0) { %>
             <% posts.forEach(post => { %>
                 <div class="post">
-                    <tr>
-                        <h2><a href="/post/<%= post.id %>"><%= post.title %></a></h2>
-                        <form action="/delete/<%= post.id %>" method="POST">
-                            <button class="delete-btn" type="submit">Delete</button>
-                        </form>
-                    </tr>
-                   
+                    <h2><a href="/post/<%= post.id %>"><%= post.title %></a></h2>
+                    <form action="/delete/<%= post.id %>" method="POST">
+                        <button class="delete-btn" type="submit">Delete</button>
+                    </form>
                 </div>
             <% }) %>
         <% } else { %>

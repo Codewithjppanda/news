@@ -95,13 +95,3 @@ footer p {
     margin: 0;
     font-size: 14px;
 }
-
-.back-link {
-    font-size: 1rem;
-    color: #007acc;
-    text-decoration: none;
-}
-
-.back-link:hover {
-    text-decoration: underline;
-}
