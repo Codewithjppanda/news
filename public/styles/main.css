@@ -1,97 +1,254 @@
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&family=Open+Sans:wght@400;600&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Open Sans', sans-serif;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
-    color: #333;
+    line-height: 1.7;
+    overflow-x: hidden;
+    animation: fadeIn 1s ease-in-out;
+    background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fad0c4, #fad0c4, #ff9a9e);
+    background-size: 200% 200%;
+    animation: rgbBackground 10s ease infinite;
+}
+
+/* RGB Background animation */
+@keyframes rgbBackground {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Fade-in animation for the body */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .container {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    border-top: 4px solid #2980b9;
+    animation: slideInUp 0.8s ease-in-out;
+}
+
+/* Slide-in animation for container */
+@keyframes slideInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 h1 {
+    font-family: 'Merriweather', serif;
+    font-size: 40px;
+    color: #34495e;
     text-align: center;
-    color: #333;
+    margin-bottom: 30px;
+    animation: fadeInDown 1s ease-in-out;
 }
 
-form {
+/* Fade-in down animation for headers */
+@keyframes fadeInDown {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+h2, h3, h4, h5, h6 {
+    font-family: 'Merriweather', serif;
+    color: #34495e;
     margin-bottom: 20px;
+    animation: fadeInDown 1s ease-in-out;
+}
+
+h2 {
+    font-size: 28px;
+    border-bottom: 2px solid #2980b9;
+    padding-bottom: 10px;
+}
+
+a {
+    color: #2980b9;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #1a5276;
+    text-decoration: underline;
 }
 
 input[type="text"],
 textarea {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
     font-size: 16px;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
 }
 
 button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
+    padding: 12px 25px;
+    background-color: #2980b9;
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
+    font-family: 'Merriweather', serif;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+/* Button hover animations */
 button:hover {
-    background-color: #0056b3;
+    background-color: #1a5276;
+    transform: translateY(-2px);
 }
 
 .delete-btn {
-    background-color: #dc3545;
+    background-color: #e74c3c;
 }
 
 .delete-btn:hover {
-    background-color: #c82333;
+    background-color: #c0392b;
 }
 
 .posts {
-    margin-top: 30px;
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
 }
 
 .post {
-    margin-top: 30px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #2980b9;
+    animation: postFadeIn 1s ease-in-out;
+}
+
+/* Post fade-in animation */
+@keyframes postFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .post h2 {
+    font-size: 24px;
     margin-top: 0;
-}
-
-.back-link {
-    display: inline-block;
-    margin-top: 20px;
-    text-decoration: none;
-    color: #007bff;
-    font-size: 16px;
-}
-
-.back-link:hover {
-    text-decoration: underline;
 }
 
 footer {
     text-align: center;
-    padding: 10px 0;
-    margin-top: 20px;
+    padding: 20px;
+    margin-top: 50px;
     background-color: #f4f4f4;
-    color: #333;
+    color: #34495e;
+    border-top: 2px solid #2980b9;
+    border-radius: 0 0 8px 8px;
+    animation: fadeIn 1s ease-in-out;
 }
 
 footer p {
     margin: 0;
     font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 95%;
+        padding: 30px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    .post h2 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    .post h2 {
+        font-size: 20px;
+    }
+
+    .posts {
+        grid-template-columns: 1fr;
+    }
+
+    button, .delete-btn {
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 28px;
+    }
+
+    .post {
+        padding: 15px;
+    }
+
+    button, .delete-btn {
+        padding: 12px;
+        font-size: 16px;
+    }
 }
