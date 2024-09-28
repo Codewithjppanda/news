@@ -33,15 +33,20 @@ app.use(session({
 
 // Routes
 // Modified '/' route to allow public access to posts
+// Example: Adding logging and optimizing a query
 app.get('/', async (req, res) => {
+    console.log('Fetching all posts...');
     try {
-        const posts = await Post.find(); // Retrieve all posts without requiring user authentication
+        const start = Date.now(); // Start time logging
+        const posts = await Post.find().limit(20); // Adding a limit to fetch only a manageable number of posts
+        console.log(`Fetched posts in ${Date.now() - start}ms`); // Log the time taken
         res.render('index', { userName: req.session.userName || 'Guest', posts: posts });
     } catch (error) {
         console.error('Error retrieving posts:', error);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 app.get('/userinfo', (req, res) => {
     res.render('userinfo');
