@@ -35,15 +35,18 @@ app.use(session({
 // Modified '/' route to allow public access to posts
 // Example: Adding logging and optimizing a query
 app.get('/', async (req, res) => {
-    console.log('Fetching all posts...');
-    try {
-        const start = Date.now(); // Start time logging
-        const posts = await Post.find().limit(20); // Adding a limit to fetch only a manageable number of posts
-        console.log(`Fetched posts in ${Date.now() - start}ms`); // Log the time taken
-        res.render('index', { userName: req.session.userName || 'Guest', posts: posts });
-    } catch (error) {
-        console.error('Error retrieving posts:', error);
-        res.status(500).send('Internal Server Error');
+    if (!req.session.userName) {
+        res.redirect('/userinfo');
+    } else {
+        try {
+            const start = Date.now(); // Start time logging
+            const posts = await Post.find().limit(20); // Adding a limit to fetch only a manageable number of posts
+            console.log(`Fetched posts in ${Date.now() - start}ms`); // Log the time taken
+            res.render('index', { userName: req.session.userName || 'Guest', posts: posts });
+        } catch (error) {
+            console.error('Error retrieving posts:', error);
+            res.status(500).send('Internal Server Error');
+        }
     }
 });
 
@@ -138,8 +141,8 @@ const mongoURI = process.env.MONGO_URI;
 mongoose.connect(mongoURI, {
     serverSelectionTimeoutMS: 30000 // Increase timeout to 30 seconds
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Start the server
 app.listen(port, () => {
