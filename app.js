@@ -32,17 +32,14 @@ app.use(session({
 }));
 
 // Routes
+// Modified '/' route to allow public access to posts
 app.get('/', async (req, res) => {
-    if (!req.session.userName) {
-        res.redirect('/userinfo');
-    } else {
-        try {
-            const posts = await Post.find({ user: req.session.userId }); // Retrieve posts by the current user
-            res.render('index', { userName: req.session.userName, posts: posts });
-        } catch (error) {
-            console.error('Error retrieving posts:', error);
-            res.status(500).send('Internal Server Error');
-        }
+    try {
+        const posts = await Post.find(); // Retrieve all posts without requiring user authentication
+        res.render('index', { userName: req.session.userName || 'Guest', posts: posts });
+    } catch (error) {
+        console.error('Error retrieving posts:', error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
@@ -75,7 +72,11 @@ app.post('/userinfo', async (req, res) => {
     }
 });
 
+// Secured route to create a new post
 app.post('/new', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(403).send('Forbidden: You must be logged in to create a post.');
+    }
     const { title, content } = req.body;
     try {
         const newPost = new Post({
@@ -91,11 +92,12 @@ app.post('/new', async (req, res) => {
     }
 });
 
+// Modified to allow public access to view individual posts
 app.get('/post/:id', async (req, res) => {
     try {
-        const post = await Post.findOne({ _id: req.params.id, user: req.session.userId });
+        const post = await Post.findOne({ _id: req.params.id });
         if (post) {
-            res.render('post', { post: post, userName: req.session.userName });
+            res.render('post', { post: post, userName: req.session.userName || 'Guest' });
         } else {
             res.status(404).send('Post not found');
         }
@@ -105,7 +107,11 @@ app.get('/post/:id', async (req, res) => {
     }
 });
 
+// Secured delete route to ensure only the post owner can delete
 app.post('/delete/:id', async (req, res) => {
+    if (!req.session.userId) {
+        return res.status(403).send('Forbidden: You must be logged in to delete a post.');
+    }
     try {
         const post = await Post.findOne({ _id: req.params.id, user: req.session.userId });
 
