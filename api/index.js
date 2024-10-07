@@ -61,8 +61,6 @@ app.get('/post/:id', async (req, res) => {
     }
 });
 
-
-
 app.get('/userinfo', (req, res) => {
     res.render('userinfo');
 });
@@ -74,13 +72,14 @@ app.post('/userinfo', async (req, res) => {
     try {
         console.log('Checking for existing user...');
         let user = await User.findOne({ email: userEmail });
-        console.log('User check complete.');
-        
+
         if (user) {
+            console.log('User found, updating session...');
             req.session.userName = userName;
             req.session.userId = user._id;
             res.redirect('/');
         } else {
+            console.log('Creating new user...');
             user = new User({ name: userName, email: userEmail });
             await user.save();
 
