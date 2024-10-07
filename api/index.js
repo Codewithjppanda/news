@@ -46,6 +46,23 @@ app.get('/', async (req, res) => {
     }
 });
 
+app.get('/post/:id', async (req, res) => {
+    try {
+        console.log('Requested Post ID:', req.params.id);
+        const post = await Post.findById(req.params.id);
+        if (post) {
+            res.render('post_readonly', { post: post, userName: req.session.userName || 'Guest' });
+        } else {
+            res.status(404).send('Post not found');
+        }
+    } catch (error) {
+        console.error('Error retrieving post:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
 app.get('/userinfo', (req, res) => {
     res.render('userinfo');
 });
